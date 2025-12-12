@@ -1,0 +1,23 @@
+{
+    "name": "mario-sousa/slim-tasks",
+    "description": "Slim based task API",
+    "autoload": {
+        "psr-4": {
+            "MarioSousa\\SlimTasks\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mres42",
+            "email": "mario.github@protonmail.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.8",
+        "firebase/php-jwt": "^6.11"
+    },
+    "scripts": {
+        "dev": "php -S localhost:8080 -t public"
+    }
+}
