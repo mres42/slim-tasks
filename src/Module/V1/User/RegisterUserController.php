@@ -19,19 +19,25 @@ class RegisterUserController
     //     $this->registerUserService = new RegisterUserService();
     // }
 
-    public function store(Request $req, Response $res)
+    public function store(Request $req, Response $res): Response
     {
         $data = $req->getParsedBody();
 
         if (!is_array($data)) {
             throw new ValidationException('Invalid request body');
         }
+        $errors = [];
 
-        if (empty($data['email']) || empty($data['password'])) {
-            throw new ValidationException("Email and password are required!", [
-                "email" => empty($data['email']) ? "Email is required." : null,
-                "password" => empty($data['password']) ? "Password is requried." : null
-            ]);
+        if (empty($data['email'])) {
+            $errors['email'] = 'Email is required';
+        }
+
+        if (empty($data['password'])) {
+            $errors['password'] = 'Password is required';
+        }
+
+        if (!empty($errors)) {
+            throw new ValidationException('Email and password are required', $errors);
         }
 
         $this->registerUserService->register($data['email'], $data['password']);
