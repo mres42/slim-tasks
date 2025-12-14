@@ -3,14 +3,29 @@
 namespace App\Module\V1\User;
 
 use App\Module\V1\User\RegisterUserRepository;
+use App\Exception\DatabaseException;
+use App\Exception\ValidationException;
 
 class RegisterUserService
 {
-    private RegisterUserRepository $registerUserRepository;
+    public function __construct(private RegisterUserRepository $registerUserRepository) {}
 
     public function register(string $email, string $password): bool
     {
+        $userExists = $this->registerUserRepository->userAlreadyExists($email);
+        if ($userExists) {
+            throw new ValidationException("User email already exists.", [
+                "message" => "A user with that email already exists."
+            ]);
+        }
+
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-        return $this->registerUserRepository->insertNewUser($email, $passwordHash);
+        $register = $this->registerUserRepository->insertNewUser($email, $passwordHash);
+
+        if (!$register) {
+            throw new DatabaseException("Failed to register new user.");
+        }
+
+        return $register;
     }
 }

@@ -4,18 +4,15 @@ namespace App\Module\V1\Routes;
 
 
 use App\Module\V1\Auth\AuthController;
-use App\Module\V1\User\UserController;
+use App\Module\V1\User\RegisterUserController;
 
 class Routes
 {
     public static function routes($app)
     {
 
-        // Auth routes
-        // $app->post('/v1/auth/login',   [AuthController::class, 'login']);
-        // $app->get('/',   [AuthController::class, 'login']);
-        $app->post('/login',   [AuthController::class, 'login']);
+        $app->post('/login', [AuthController::class, 'login']);
 
-        // Task routes
+        $app->post('/register', [RegisterUserController::class, 'store']);
     }
 }

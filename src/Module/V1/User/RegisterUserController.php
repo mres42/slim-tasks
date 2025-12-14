@@ -9,15 +9,8 @@ use App\Exception\ValidationException;
 
 class RegisterUserController
 {
-    // private RegisterUserService $registerUserService;
 
-    public function __construct(
-        private RegisterUserService $registerUserService
-    ) {}
-    // public function __construct()
-    // {
-    //     $this->registerUserService = new RegisterUserService();
-    // }
+    public function __construct(private RegisterUserService $registerUserService) {}
 
     public function store(Request $req, Response $res): Response
     {
