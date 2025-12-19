@@ -1,6 +1,5 @@
 <?php
 
-
 use Dotenv\Dotenv;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -10,8 +9,8 @@ $dotenv->load();
 
 return [
     'paths' => [
-        'migrations' => 'database/migrations',
-        'seeds'      => 'database/seeds'
+        'migrations' => __DIR__ . '/src/Database/migrations',
+        'seeds'      => __DIR__ . '/src/Database/seeds',
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',
@@ -24,6 +23,6 @@ return [
             'pass' => $_ENV['DB_PASS'],
             'port' => 3306,
             'charset' => 'utf8mb4',
-        ]
-    ]
+        ],
+    ],
 ];
