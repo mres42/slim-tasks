@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Module\V1\User;
+namespace App\Module\V1\User\Service;
 
-use App\Module\V1\User\RegisterUserRepository;
+use App\Module\V1\User\Repository\RegisterUserRepository;
 use App\Exception\DatabaseException;
 use App\Exception\ValidationException;
 

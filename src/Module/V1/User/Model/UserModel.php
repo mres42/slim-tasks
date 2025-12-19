@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Module\V1\User;
+namespace App\Module\V1\User\Model;
 
 class UserModel
 {

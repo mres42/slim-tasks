@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Module\V1\Auth;
+namespace App\Module\V1\Auth\Service;
 
-use App\Module\V1\Auth\AuthRepository;
+use App\Module\V1\Auth\Repository\AuthRepository;
 
 class AuthService
 {

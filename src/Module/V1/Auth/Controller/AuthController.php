@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Module\V1\Auth;
+namespace App\Module\V1\Auth\Controller;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Module\V1\Auth\Service\AuthService;
 
 class AuthController
 {

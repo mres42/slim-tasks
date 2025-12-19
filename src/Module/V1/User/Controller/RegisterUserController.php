@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Module\V1\User;
+namespace App\Module\V1\User\Controller;
 
-use App\Module\V1\User\RegisterUserService;
+use App\Module\V1\User\Service\RegisterUserService;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Exception\ValidationException;

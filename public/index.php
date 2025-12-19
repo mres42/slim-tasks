@@ -26,7 +26,7 @@ $errorMiddleware = $app->addErrorMiddleware(
 
 $errorMiddleware->setDefaultErrorHandler(
     function (Request $request, Throwable $exception) use ($app): Response {
-        // log errors to terminal so i can debug more easily
+        // log errors to terminal
         error_log($exception->getMessage());
 
         $response = $app->getResponseFactory()->createResponse();
