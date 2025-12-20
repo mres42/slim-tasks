@@ -3,9 +3,8 @@
 namespace App\Module\V1\Auth\Service;
 
 use App\Module\V1\Auth\Repository\AuthRepository;
-use App\Module\V1\Auth\Repository\UserRepository;
-use App\Module\V1\Auth\Model\UserModel;
 use App\Application\Security\JwtService;
+use App\Exception\AuthException;
 
 class AuthService
 {
@@ -21,8 +20,8 @@ class AuthService
 
         if (!$user->getId()) {
             // return exception
-            return [];
-        }
+            throw new AuthException("No user with that email was found.");
+        };
 
         // generate auth token
         $token = $this->jwtService->generate([
