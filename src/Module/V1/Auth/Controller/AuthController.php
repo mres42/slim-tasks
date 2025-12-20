@@ -41,11 +41,4 @@ class AuthController
                 ->withStatus(400);
         }
     }
-
-    // public function me(Request $req, Response $res): Response
-    // {
-    //     $user = $req->getAttribute('user');
-    //     $res->getBody()->write(json_encode($user));
-    //     return $res->withHeader('Content-Type', 'application/json');
-    // }
 }

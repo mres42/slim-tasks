@@ -11,13 +11,12 @@ class Routes
 {
     public static function routes($app)
     {
+        /**
+         * use ->add(JwtMiddleware::class)
+         * for auth in routes
+         */
 
-        // $app->post('/login', [AuthController::class, 'login']);
         $app->post('/login', [AuthController::class, 'login']);
-
-
-        // $app->post('/register', RegisterUserController::class, 'store')->add(JwtMiddleware::class);
         $app->post('/register', [RegisterUserController::class, 'store']);
-        // $app->post('/register', [RegisterUserController::class, 'store']);
     }
 }
