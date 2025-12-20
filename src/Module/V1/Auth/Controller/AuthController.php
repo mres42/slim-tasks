@@ -8,11 +8,7 @@ use App\Module\V1\Auth\Service\AuthService;
 
 class AuthController
 {
-    private AuthService $service;
-
-    public function __construct(AuthService $service) {
-        $this->service = $service;
-    }
+    public function __construct(private AuthService $service) {}
 
     public function login(Request $req, Response $res): Response
     {
@@ -27,13 +23,15 @@ class AuthController
                 throw new \InvalidArgumentException("Email and password required!");
             }
 
+            $auth = $this->service->authenticate($data);
+
             $res->getBody()->write(json_encode([
-                "msg" => "Sucessful login!"
+                "msg" => "Sucessful login!",
+                "auth" => $auth
             ]));
 
             return $res->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);
-
         } catch (\Throwable $e) {
             $res->getBody()->write(json_encode([
                 "error" => $e->getMessage()

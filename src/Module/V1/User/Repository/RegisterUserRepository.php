@@ -11,7 +11,7 @@ class RegisterUserRepository
 
     public function __construct()
     {
-        $this->pdo = \App\Database\DB::getConnection();
+        $this->pdo = DB::getConnection();
     }
 
     public function insertNewUser(string $email, string $passwordHash): bool

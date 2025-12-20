@@ -3,7 +3,7 @@
 namespace App\Application\Security;
 
 use Firebase\JWT\JWT;
-use Firebase\JWT\KEY;
+use Firebase\JWT\Key;
 
 class JwtService
 {
