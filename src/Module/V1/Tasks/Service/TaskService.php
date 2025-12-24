@@ -9,14 +9,19 @@ class TaskService
 {
     public function __construct(private TaskRepository $taskRepository) {}
 
-    public function listTasks(): array
+    public function listTasks(int $page, int $perPage): array
     {
-       $results = $this->taskRepository->getTasks();
+        $offset = ($page - 1) * $perPage;
+        $results = $this->taskRepository->getTasks($perPage, $offset);
+        $total = $this->taskRepository->countTasks();
 
         if (!$results) {
             throw new DatabaseException("Could not find any task entries in database.");
         }
 
-       return $results;
+       return [
+           'total' => $total,
+           'results' => $results
+       ];
     }
 }

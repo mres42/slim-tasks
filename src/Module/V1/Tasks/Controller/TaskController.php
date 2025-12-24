@@ -12,13 +12,29 @@ class TaskController
 
     public function index(Request $request, Response $response, array $args): Response
     {
-        $results = $this->taskService->listTasks();
+        try {
+            $data = $request->getQueryParams();
 
-        $response->getBody()->write(json_encode([
-            "msg" => "teste",
-            "resultSet" => $results
-        ]));
+            $page = max(1, (int) ($data['page'] ?? 1));
+            $perPage = min(50, max(1, (int) ($data['perPage'] ?? 10)));
+            
+            $results = $this->taskService->listTasks($page, $perPage);
 
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+            $response->getBody()->write(json_encode([
+                'page' => $page,
+                'parPage' => $perPage,
+                'total' => $results['total'],
+                'results' => $results['results']
+            ]));
+
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        } catch (\Throwable $e) {
+            $response->getBody()->write(json_encode([
+                "error" => $e->getMessage()
+            ]));
+
+            return $response->withHeader('Content-Type', 'application/json')
+                ->withStatus(400);
+        }
     }
 }
