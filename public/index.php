@@ -17,6 +17,8 @@ $app = AppFactory::create();
 // middleware to automatically parse request body
 $app->addBodyParsingMiddleware();
 
+$app->addRoutingMiddleware();
+
 // error middleware
 $errorMiddleware = $app->addErrorMiddleware(
     false,   // displayErrorDetails (false in prod)

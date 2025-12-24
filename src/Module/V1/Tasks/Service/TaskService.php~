@@ -1,0 +1,8 @@
+<?php
+
+namespace App\Module\V1\Tasks\Service;
+
+class TaskService
+{
+    
+}

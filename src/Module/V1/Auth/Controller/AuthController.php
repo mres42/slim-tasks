@@ -10,10 +10,10 @@ class AuthController
 {
     public function __construct(private AuthService $service) {}
 
-    public function login(Request $req, Response $res): Response
+    public function login(Request $request, Response $response): Response
     {
         try {
-            $data = $req->getParsedBody();
+            $data = $request->getParsedBody();
 
             if (!is_array($data)) {
                 throw new \InvalidArgumentException('Invalid request body');
@@ -25,19 +25,19 @@ class AuthController
 
             $auth = $this->service->authenticate($data);
 
-            $res->getBody()->write(json_encode([
+            $response->getBody()->write(json_encode([
                 "msg" => "Sucessful login!",
                 "auth" => $auth
             ]));
 
-            return $res->withHeader('Content-Type', 'application/json')
+            return $response->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);
         } catch (\Throwable $e) {
-            $res->getBody()->write(json_encode([
+            $response->getBody()->write(json_encode([
                 "error" => $e->getMessage()
             ]));
 
-            return $res->withHeader('Content-Type', 'application/json')
+            return $response->withHeader('Content-Type', 'application/json')
                 ->withStatus(400);
         }
     }

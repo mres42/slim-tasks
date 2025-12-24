@@ -4,13 +4,13 @@ namespace App\Module\V1\User\Model;
 
 class UserModel
 {
-    private int $id;
+    private ?int $id = null;
     private string $email;
     private string $passwordHash;
 
-    public function getId(): int
+    public function getId(): int | null
     {
-        return $this->id;
+        return $this->id?? null;
     }
 
     public function setId(int $id): void

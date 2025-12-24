@@ -20,5 +20,9 @@ final class CreateTasksTable extends AbstractMigration
     public function change(): void
     {
         $table = $this->table('tasks');
+        $table->addColumn('title', 'string')
+            ->addColumn('description', 'string')
+            ->addTimestamps()
+            ->create();
     }
 }
