@@ -12,9 +12,9 @@ class RegisterUserController
 
     public function __construct(private RegisterUserService $registerUserService) {}
 
-    public function store(Request $req, Response $res): Response
+    public function store(Request $request, Response $response): Response
     {
-        $data = $req->getParsedBody();
+        $data = $request->getParsedBody();
 
         if (!is_array($data)) {
             throw new ValidationException('Invalid request body');
@@ -35,11 +35,11 @@ class RegisterUserController
 
         $this->registerUserService->register($data['email'], $data['password']);
 
-        $res->getBody()->write(json_encode([
+        $response->getBody()->write(json_encode([
             "message" => "User registered succesfully!"
         ]));
 
-        return $res->withHeader('Content-Type', 'application/json')
+        return $response->withHeader('Content-Type', 'application/json')
             ->withStatus(201);
     }
 }
