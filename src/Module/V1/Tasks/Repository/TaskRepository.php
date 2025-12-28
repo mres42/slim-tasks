@@ -33,4 +33,35 @@ class TaskRepository
         $sql = "SELECT COUNT(*) FROM tasks";
         return (int) $this->pdo->query($sql)->fetchColumn();
     }
+
+    public function create(string $title, string $description): array
+    {
+        $sql = "INSERT INTO tasks (title, description) VALUES (:title, :description)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue('title', $title, PDO::PARAM_STR);
+        $stmt->bindValue('description', $description, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $id = (int) $this->pdo->lastInsertId();
+
+        $stmt = $this->pdo->prepare(
+            "SELECT id, title, description, created_at
+            FROM tasks
+            WHERE id = :id"
+        );
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getByTitle(string $title): int
+    {
+        $sql = "SELECT COUNT(*) FROM tasks WHERE title = :title";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue('title', $title, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchColumn();
+        return $result;
+    }
 }
