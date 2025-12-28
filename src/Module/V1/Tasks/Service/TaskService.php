@@ -24,4 +24,19 @@ class TaskService
            'results' => $results
        ];
     }
+
+    public function createTask(array $data): array
+    {
+        $taskExists = $this->taskRepository->getByTitle($data['title']);
+        if ($taskExists > 0) {
+            throw new DatabaseException("Task with that title already exists.");
+        }
+        $result = $this->taskRepository->create($data['title'], $data['description']);
+
+        if (!$result) {
+            throw new DatabaseException("Could not create task.");
+        }
+
+       return $result;
+    }
 }
