@@ -22,5 +22,6 @@ class Routes
 
         $app->get('/task/list', [TaskController::class, 'index'])->add(JwtMiddleware::class);
         $app->post('/task/new', [TaskController::class, 'store'])->add(JwtMiddleware::class);
+        $app->put('/task/{id}', [TaskController::class, 'update'])->add(JwtMiddleware::class);
     }
 }

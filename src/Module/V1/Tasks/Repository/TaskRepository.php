@@ -4,6 +4,7 @@ namespace App\Module\V1\Tasks\Repository;
 
 use App\Database\DB;
 use PDO;
+use InvalidArgumentException;
 
 class TaskRepository
 {
@@ -63,5 +64,49 @@ class TaskRepository
         $stmt->execute();
         $result = $stmt->fetchColumn();
         return $result;
+    }
+
+    public function getById(int $id): array
+    {
+        $sql = "SELECT * FROM tasks WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue('id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result;
+    }
+
+    public function update(int $id, ?string $title, ?string $description): array
+    {
+        $fields = [];
+        $params = [':id' => $id];
+
+        if ($title !== null) {
+            $fields[] = 'title = :title';
+            $params[':title'] = $title;
+        }
+
+        if ($description !== null) {
+            $fields[] = 'description = :description';
+            $params[':description'] = $description;
+        }
+
+        if (empty($fields)) {
+            throw new InvalidArgumentException('No fields to update.');
+        }
+
+        $sql = 'UPDATE tasks SET ' . implode(', ', $fields) . ' WHERE id = :id';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        $stmt = $this->pdo->prepare(
+            'SELECT id, title, description, updated_at
+            FROM tasks
+            WHERE id = :id'
+        );
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

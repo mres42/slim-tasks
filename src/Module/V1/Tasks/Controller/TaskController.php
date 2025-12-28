@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Module\V1\Tasks\Service\TaskService;
 use App\Exception\ValidationException;
+use Symfony\Component\Config\Definition\BaseNode;
 
 class TaskController
 {
@@ -68,6 +69,51 @@ class TaskController
                 'id' => $result['id'],
                 'title' => $result['title'],
                 'description' => $result['description'],
+            ]));
+
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        } catch (\Throwable $e) {
+            $response->getBody()->write(json_encode([
+                "error" => $e->getMessage()
+            ]));
+
+            return $response->withHeader('Content-Type', 'application/json')
+                ->withStatus(400);
+        }
+    }
+
+    public function update(Request $request, Response $response, array $args): Response
+    {
+        try {
+            if (!isset($args['id'])) {
+                throw new ValidationException('Invalid id argument.');
+            }
+
+            $data = $request->getParsedBody();
+
+            if (!is_array($data)) {
+                throw new ValidationException('Invalid request body');
+            }
+            
+            $title = isset($data['title']) ? trim($data['title']) : null;
+            $description = isset($data['description']) ? trim($data['description']) : null;
+
+            $title = $title === '' ? null : $title;
+            $description = $description === '' ? null : $description;
+
+            if ($title === null && $description === null) {
+                throw new ValidationException('Title or description required.');
+            }
+
+            $result = $this->taskService->updateTask((int)$args['id'], $title, $description);
+
+            $response->getBody()->write(json_encode([
+                'status' => 'success',
+                'updatedTask' => [
+                    'id' => $result['id'],
+                    'title' => $result['title'],
+                    'description' => $result['description'],
+                ]
             ]));
 
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
