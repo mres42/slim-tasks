@@ -109,4 +109,12 @@ class TaskRepository
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function delete(int $id): void
+    {
+        $sql = 'DELETE FROM tasks WHERE id = :id';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue('id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

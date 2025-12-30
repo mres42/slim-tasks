@@ -126,4 +126,30 @@ class TaskController
                 ->withStatus(400);
         }
     }
+
+    public function delete(Request $request, Response $response, array $args): Response
+    {
+        try {
+            if (!isset($args['id'])) {
+                throw new ValidationException('Invalid id argument.');
+            }
+
+
+            $result = $this->taskService->deleteTask((int)$args['id']);
+
+            $response->getBody()->write(json_encode([
+                'status' => 'success',
+                'message' => 'Task deleted successfully!'
+            ]));
+
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        } catch (\Throwable $e) {
+            $response->getBody()->write(json_encode([
+                "error" => $e->getMessage()
+            ]));
+
+            return $response->withHeader('Content-Type', 'application/json')
+                ->withStatus(400);
+        }
+    }
 }

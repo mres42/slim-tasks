@@ -43,22 +43,17 @@ class TaskService
 
     public function updateTask(int $id, ?string $title, ?string $description): array
     {
-        $taskExists = $this->taskRepository->getById($id);
-        if (!$taskExists['id']) {
-            throw new DatabaseException("No task with given id exists.");
+        $title = $title !== null && trim($title) === '' ? null : $title;
+        $description = $description !== null && trim($description) === '' ? null : $description;
+
+        if ($title === null && $description === null) {
+            throw new ValidationException('Title or description required.');
         }
 
-            $title = $title !== null && trim($title) === '' ? null : $title;
-    $description = $description !== null && trim($description) === '' ? null : $description;
-
-    if ($title === null && $description === null) {
-        throw new ValidationException('Title or description required.');
-    }
-
-    $taskExists = $this->taskRepository->getById($id);
-    if (!$taskExists) {
-        throw new DatabaseException('No task with given id exists.');
-    }
+        $taskExists = $this->taskRepository->getById($id);
+        if (!$taskExists) {
+            throw new DatabaseException('No task with given id exists.');
+        }
 
         $result = $this->taskRepository->update($id, $title, $description);
 
@@ -67,5 +62,20 @@ class TaskService
         }
 
        return $result;
+    }
+
+    public function deleteTask(int $id): void
+    {
+        $taskExists = $this->taskRepository->getById($id);
+        if (!$taskExists['id']) {
+            throw new DatabaseException("No task with given id exists.");
+        }
+
+        $taskExists = $this->taskRepository->getById($id);
+        if (!$taskExists) {
+            throw new DatabaseException('No task with given id exists.');
+        }
+
+        $this->taskRepository->delete($id);
     }
 }
